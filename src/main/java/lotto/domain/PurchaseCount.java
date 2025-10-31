@@ -12,6 +12,7 @@ public class PurchaseCount {
     public void calculatePurchaseCount() {
         this.count = amount / LOTTO_PRICE;
     }
+
     public int getCount() {
         return count;
     }

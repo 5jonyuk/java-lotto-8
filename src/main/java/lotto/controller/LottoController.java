@@ -20,7 +20,7 @@ public class LottoController {
         outputView.printEnterPurchaseAmountMessage();
         int amount = inputView.inputPurchaseAmount();
 
-        PurchaseCount purchaseCount = lottoService.calculatePurchaseCount(amount);
+        PurchaseCount purchaseCount = lottoService.createPurchaseCount(amount);
         outputView.printEnterPurchaseCountMessage(purchaseCount.getCount());
     }
 }
