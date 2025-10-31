@@ -7,6 +7,7 @@ public class PurchaseCount {
 
     public PurchaseCount(int amount) {
         this.amount = amount;
+        calculatePurchaseCount();
     }
 
     public void calculatePurchaseCount() {
