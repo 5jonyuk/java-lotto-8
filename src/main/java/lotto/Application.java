@@ -1,7 +1,7 @@
 package lotto;
 
 import lotto.controller.LottoController;
-import lotto.parser.PurchaseAmountParser;
+import lotto.parser.StringToIntParser;
 import lotto.validator.PurchaseAmountValidator;
 import lotto.view.OutputView;
 import lotto.view.InputView;
@@ -12,7 +12,7 @@ import lotto.parser.InputParser;
 public class Application {
     public static void main(String[] args) {
         InputValidator inputValidator = new PurchaseAmountValidator();
-        InputParser inputParser = new PurchaseAmountParser();
+        InputParser inputParser = new StringToIntParser();
         OutputView outputView = new OutputView();
         InputView inputView = new InputView(inputValidator, outputView, inputParser);
         LottoService lottoService = new LottoService();

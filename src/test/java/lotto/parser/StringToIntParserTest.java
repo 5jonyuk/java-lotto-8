@@ -5,8 +5,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PurchaseAmountParserTest {
-    private final PurchaseAmountParser parser = new PurchaseAmountParser();
+class StringToIntParserTest {
+    private final StringToIntParser parser = new StringToIntParser();
 
     @ParameterizedTest
     @CsvSource(value = {"'1000':1000", "'20000':20000", "'20':20"}, delimiter = ':')
