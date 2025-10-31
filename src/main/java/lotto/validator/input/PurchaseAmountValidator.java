@@ -1,4 +1,4 @@
-package lotto.validator;
+package lotto.validator.input;
 
 public class PurchaseAmountValidator implements InputValidator {
     private static final String ERROR_MESSAGE_MINIMUM = "[ERROR] 구입 금액은 1,000원 이상이어야 합니다.";
