@@ -1,5 +1,6 @@
 package lotto.validator.lotto;
 
+import lotto.validator.LottoNumberValidator;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

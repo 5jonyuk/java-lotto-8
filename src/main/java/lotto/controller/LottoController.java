@@ -2,9 +2,13 @@ package lotto.controller;
 
 import lotto.domain.Lotto;
 import lotto.domain.PurchaseCount;
-import lotto.parser.InputParser;
+import lotto.domain.WinningLotto;
+import lotto.parser.WinningLottoParser;
+import lotto.parser.input.InputParser;
 import lotto.service.LottoService;
-import lotto.validator.input.InputValidator;
+import lotto.validator.AmountValidator;
+import lotto.validator.PurchaseAmountValidator;
+import lotto.validator.WinningLottoValidator;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -14,28 +18,70 @@ public class LottoController {
     private final InputView inputView;
     private final OutputView outputView;
     private final LottoService lottoService;
-    private final InputValidator inputValidator;
+    private final PurchaseAmountValidator purchaseAmountValidator;
     private final InputParser inputParser;
+    private final AmountValidator amountValidator;
+    private final WinningLottoValidator winningLottoValidator;
+    private final WinningLottoParser winningLottoParser;
 
-    public LottoController(InputView inputView, OutputView outputView, LottoService lottoService,
-                           InputValidator inputValidator, InputParser inputParser) {
+    public LottoController(
+            InputView inputView,
+            OutputView outputView,
+            LottoService lottoService,
+            PurchaseAmountValidator purchaseAmountValidator,
+            InputParser inputParser,
+            AmountValidator amountValidator,
+            WinningLottoValidator winningLottoValidator,
+            WinningLottoParser winningLottoParser
+    ) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.lottoService = lottoService;
-        this.inputValidator = inputValidator;
+        this.purchaseAmountValidator = purchaseAmountValidator;
+        this.winningLottoValidator = winningLottoValidator;
         this.inputParser = inputParser;
+        this.amountValidator = amountValidator;
+        this.winningLottoParser = winningLottoParser;
     }
 
-    public int getValidatedPurchaseAmount(){
-        while(true){
-            try{
+    public int getValidatedPurchaseAmount() {
+        while (true) {
+            try {
                 String input = inputView.readPurchaseAmount();
-                inputValidator.validateInput(input);
-                int amount =  inputParser.parseNumber(input);
-                inputValidator.validateAmount(amount);
+                purchaseAmountValidator.validateInput(input);
+                int amount = inputParser.parseNumber(input);
+                amountValidator.validateAmount(amount);
                 return amount;
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e.getMessage());
             }
-            catch (IllegalArgumentException e){
+        }
+    }
+
+    public WinningLotto getValidatedWinningNumber() {
+        List<Integer> winningNumbers = getWinningNumbers();
+        int bonusNumber = getBonusNumber(winningNumbers);
+        return new WinningLotto(winningNumbers, bonusNumber);
+    }
+
+    private List<Integer> getWinningNumbers() {
+        while (true) {
+            try {
+                String input = inputView.readWinningNumber();
+                return winningLottoValidator.validateWinningNumbers(input);
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e.getMessage());
+            }
+        }
+    }
+
+    private int getBonusNumber(List<Integer> winningNumbers) {
+        while (true) {
+            try {
+                outputView.printBonusNumber();
+                String bonusInput = inputView.readBonusNumber();
+                return winningLottoValidator.validateBonusNumber(bonusInput, winningNumbers);
+            } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e.getMessage());
             }
         }
@@ -52,5 +98,9 @@ public class LottoController {
         outputView.printLottos(lottos);
 
         outputView.printWinningNumber();
+        WinningLotto winningLottos = getValidatedWinningNumber();
+
+        System.out.println(winningLottos.getWinningNumbers());
+        System.out.println(winningLottos.getBonusNumber());
     }
 }

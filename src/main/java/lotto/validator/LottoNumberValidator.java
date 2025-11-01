@@ -1,4 +1,4 @@
-package lotto.validator.lotto;
+package lotto.validator;
 
 import java.util.HashSet;
 import java.util.List;
@@ -7,10 +7,12 @@ import java.util.Set;
 public class LottoNumberValidator {
     private static final String ERROR_MESSAGE_LOTTO_NUMBER_SIZE = "[ERROR] 로또 번호는 6개여야 합니다.";
     private static final String ERROR_MESSAGE_LOTTO_NUMBER_DUPLICATE = "[ERROR] 로또 번호 중복될 수 없습니다.";
+    private static final String ERROR_MESSAGE_LOTTO_NUMBER_ARRANGE = "[ERROR] 로또 번호는 1~45 사이 숫자여야 합니다.";
 
     public static void validate(List<Integer> numbers) {
         validateLottoNumberSize(numbers);
         validateLottoNumberDuplicate(numbers);
+        validateLottoNumberArrange(numbers);
     }
 
     private static void validateLottoNumberSize(List<Integer> numbers) {
@@ -24,5 +26,13 @@ public class LottoNumberValidator {
         if (uniqueNumbers.size() != numbers.size()) {
             throw new IllegalArgumentException(ERROR_MESSAGE_LOTTO_NUMBER_DUPLICATE);
         }
+    }
+
+    private static void validateLottoNumberArrange(List<Integer> numbers) {
+        numbers.forEach(number -> {
+            if (number < 1 || number > 45) {
+                throw new IllegalArgumentException(ERROR_MESSAGE_LOTTO_NUMBER_ARRANGE);
+            }
+        });
     }
 }

@@ -1,5 +1,6 @@
 package lotto.parser;
 
+import lotto.parser.input.StringToIntParser;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
