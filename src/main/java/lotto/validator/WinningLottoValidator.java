@@ -9,6 +9,7 @@ import java.util.List;
 public class WinningLottoValidator implements InputValidator {
     private static final String ERROR_MESSAGE_WINNING_NUMBER_SIZE = "[ERROR] 당첨 번호는 6개여야 합니다.";
     private static final String ERROR_MESSAGE_WINNING_NUMBER_RANGE = "[ERROR] 당첨 번호는 1~45 사이 숫자여야 합니다.";
+    private static final String ERROR_MESSAGE_WINNING_NUMBER_NOT_SEPERATED_COMMA = "[ERROR] 당첨 번호는 쉼표(,)로 구분된 숫자여야 합니다.";
     private static final String ERROR_MESSAGE_BONUS_DUPLICATE = "[ERROR] 보너스 번호는 당첨번호와 중복될 수 없습니다.";
     private static final String ERROR_MESSAGE_BONUS_RANGE = "[ERROR] 보너스 번호는 1~45 사이 숫자여야 합니다.";
 
@@ -24,26 +25,48 @@ public class WinningLottoValidator implements InputValidator {
     public List<Integer> validateWinningNumbers(String input) {
         validateWinningNumberInput(input);
         List<Integer> numbers = winningLottoParser.parseWinningNumbers(input);
-        if (numbers.size() != 6) throw new IllegalArgumentException(ERROR_MESSAGE_WINNING_NUMBER_SIZE);
-        numbers.forEach(n -> {
-            if (n < 1 || n > 45) throw new IllegalArgumentException(ERROR_MESSAGE_WINNING_NUMBER_RANGE);
-        });
+        validateWinningNumberSize(numbers.size());
+        validateWinningNumberRange(numbers);
         return numbers;
     }
 
     public int validateBonusNumber(String bonusInput, List<Integer> winningNumbers) {
         validateInput(bonusInput);
         int bonus = inputParser.parseNumber(bonusInput);
-        if (bonus < 1 || bonus > 45) throw new IllegalArgumentException(ERROR_MESSAGE_BONUS_RANGE);
-        if (winningNumbers.contains(bonus)) throw new IllegalArgumentException(ERROR_MESSAGE_BONUS_DUPLICATE);
+        validateBonusNumberRange(bonus);
+        validateDuplicateBonusNumber(winningNumbers, bonus);
         return bonus;
     }
 
-    private void validateWinningNumberInput(String input){
+    private void validateWinningNumberInput(String input) {
         try {
             winningLottoParser.parseWinningNumbers(input);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("[ERROR] 당첨 번호는 쉼표(,)로 구분된 숫자여야 합니다.");
+            throw new IllegalArgumentException(ERROR_MESSAGE_WINNING_NUMBER_NOT_SEPERATED_COMMA);
         }
+    }
+
+    private void validateWinningNumberSize(int size) {
+        if (size != 6) {
+            throw new IllegalArgumentException(ERROR_MESSAGE_WINNING_NUMBER_SIZE);
+        }
+    }
+
+    private void validateWinningNumberRange(List<Integer> numbers) {
+        numbers.forEach(number -> {
+            if (number < 1 || number > 45) {
+                throw new IllegalArgumentException(ERROR_MESSAGE_WINNING_NUMBER_RANGE);
+            }
+        });
+    }
+
+    private void validateBonusNumberRange(int number) {
+        if (number < 1 || number > 45) {
+            throw new IllegalArgumentException(ERROR_MESSAGE_BONUS_RANGE);
+        }
+    }
+
+    private void validateDuplicateBonusNumber(List<Integer> winningNumbers, int bonus) {
+        if (winningNumbers.contains(bonus)) throw new IllegalArgumentException(ERROR_MESSAGE_BONUS_DUPLICATE);
     }
 }

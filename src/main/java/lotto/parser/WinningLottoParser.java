@@ -8,7 +8,6 @@ public class WinningLottoParser {
 
     public List<Integer> parseWinningNumbers(String input) {
         return Arrays.stream(input.split(LOTTO_NUMBER_SEPARATOR))
-//                .map(String::trim)
                 .map(Integer::parseInt)
                 .toList();
     }
