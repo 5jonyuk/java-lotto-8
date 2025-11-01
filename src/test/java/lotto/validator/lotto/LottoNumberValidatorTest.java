@@ -24,4 +24,12 @@ class LottoNumberValidatorTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    @Test
+    void 로또번호는_1과_45사이에_숫자이여야_합니다(){
+        List<Integer> lottos = List.of(1, 2, 3, 4, 5, 46);
+
+        assertThatThrownBy(() -> LottoNumberValidator.validate(lottos))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
 }
