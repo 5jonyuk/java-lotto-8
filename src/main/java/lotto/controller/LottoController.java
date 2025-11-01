@@ -100,7 +100,5 @@ public class LottoController {
         outputView.printWinningNumber();
         WinningLotto winningLottos = getValidatedWinningNumber();
 
-        System.out.println(winningLottos.getWinningNumbers());
-        System.out.println(winningLottos.getBonusNumber());
     }
 }
