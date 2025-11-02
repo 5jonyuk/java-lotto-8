@@ -1,7 +1,6 @@
 package lotto.service;
 
-import lotto.domain.Lotto;
-import lotto.domain.PurchaseCount;
+import lotto.domain.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -33,5 +32,24 @@ public class LottoServiceTest {
 
         assertThat(numbers).doesNotHaveDuplicates();
         assertThat(numbers).allMatch(number -> number >= 1 && number <= 45);
+    }
+
+    @Test
+    void 로또결과를_계산한다(){
+        Lotto lotto1 = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+        Lotto lotto2 = new Lotto(List.of(1, 2, 3, 4, 5, 7));
+        Lotto lotto3 = new Lotto(List.of(1, 2, 3, 4, 5, 8));
+        WinningLotto winningLotto = new WinningLotto(List.of(1, 2, 3, 4, 5, 6), 7);
+
+        LottoResult lottoResult = lottoService.calculateLottoResult(List.of(lotto1, lotto2, lotto3), winningLotto);
+
+        assertThat(lottoResult.getRankCount().get(Rank.FIRST)).isEqualTo(1);
+        assertThat(lottoResult.getRankCount().get(Rank.SECOND)).isEqualTo(1);
+        assertThat(lottoResult.getRankCount().get(Rank.THIRD)).isEqualTo(1);
+        assertThat(lottoResult.getRankCount().get(Rank.FOURTH)).isEqualTo(0);
+        assertThat(lottoResult.getRankCount().get(Rank.FIFTH)).isEqualTo(0);
+        assertThat(lottoResult.getRankCount().get(Rank.NONE)).isEqualTo(0);
+
+
     }
 }
