@@ -1,6 +1,7 @@
 package lotto.controller;
 
 import lotto.domain.Lotto;
+import lotto.domain.LottoResult;
 import lotto.domain.PurchaseCount;
 import lotto.domain.WinningLotto;
 import lotto.parser.WinningLottoParser;
@@ -100,5 +101,7 @@ public class LottoController {
         outputView.printWinningNumber();
         WinningLotto winningLottos = getValidatedWinningNumber();
 
+        LottoResult result = lottoService.calculateLottoResult(lottos, winningLottos);
+        outputView.printLottoResult(result, amount);
     }
 }

@@ -16,7 +16,11 @@ public class LottoResult {
         rankCount.put(rank, rankCount.get(rank) + 1);
     }
 
-    public double caculateProfitRate(int purchaseAmount) {
+    public Map<Rank, Integer> getRankCount() {
+        return rankCount;
+    }
+
+    public double calculateProfitRate(int purchaseAmount) {
         long totalWinningAmount = rankCount.entrySet().stream()
                 .mapToLong(entry -> (long) entry.getKey().getPrizeMoney() * entry.getValue())
                 .sum();
