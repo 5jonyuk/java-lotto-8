@@ -25,6 +25,6 @@ public class LottoResult {
                 .mapToLong(entry -> (long) entry.getKey().getPrizeMoney() * entry.getValue())
                 .sum();
 
-        return Math.round(((double) (totalWinningAmount / purchaseAmount)) * 1000) / 10.0;
+        return Math.round((((double) totalWinningAmount / purchaseAmount)) * 1000) / 10.0;
     }
 }
