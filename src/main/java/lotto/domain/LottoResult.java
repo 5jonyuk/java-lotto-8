@@ -12,8 +12,15 @@ public class LottoResult {
         }
     }
 
-    public void addRank(Rank rank){
+    public void addRank(Rank rank) {
         rankCount.put(rank, rankCount.get(rank) + 1);
     }
 
+    public double caculateProfitRate(int purchaseAmount) {
+        long totalWinningAmount = rankCount.entrySet().stream()
+                .mapToLong(entry -> (long) entry.getKey().getPrizeMoney() * entry.getValue())
+                .sum();
+
+        return Math.round(((double) (totalWinningAmount / purchaseAmount)) * 1000) / 10.0;
+    }
 }
