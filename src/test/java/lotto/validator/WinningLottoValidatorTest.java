@@ -67,6 +67,21 @@ class WinningLottoValidatorTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    @Test
+    void 당첨번호가_중복되지_않으면_성공적으로_당첨번호를_반환한다(){
+        String winningNumbers = "1,2,3,4,5,6";
+        List<Integer> numbers = winningLottoValidator.validateWinningNumbers(winningNumbers);
+        assertThat(numbers).isEqualTo(List.of(1, 2, 3, 4, 5, 6));
+    }
+
+    @Test
+    void 당첨번호가_중복되면_예외가_발생한다(){
+        String winningNumbers = "1,2,3,4,5,5";
+
+        assertThatThrownBy(() -> winningLottoValidator.validateWinningNumbers(winningNumbers))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
     @BeforeEach
     void 당첨번호_초기화() {
         winningNumbers = List.of(1, 2, 3, 4, 5, 6);
