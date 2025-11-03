@@ -4,12 +4,15 @@ import lotto.parser.WinningLottoParser;
 import lotto.parser.input.InputParser;
 import lotto.parser.input.StringToIntParser;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WinningLottoValidator implements InputValidator {
     private static final String ERROR_MESSAGE_WINNING_NUMBER_SIZE = "[ERROR] 당첨 번호는 6개여야 합니다.";
     private static final String ERROR_MESSAGE_WINNING_NUMBER_RANGE = "[ERROR] 당첨 번호는 1~45 사이 숫자여야 합니다.";
     private static final String ERROR_MESSAGE_WINNING_NUMBER_NOT_SEPERATED_COMMA = "[ERROR] 당첨 번호는 쉼표(,)로 구분된 숫자여야 합니다.";
+    private static final String ERROR_MESSAGE_WINNING_NUMBER_DUPLICATE = "[ERROR] 당첨 번호는 중복될 수 없습니다.";
     private static final String ERROR_MESSAGE_BONUS_DUPLICATE = "[ERROR] 보너스 번호는 당첨번호와 중복될 수 없습니다.";
     private static final String ERROR_MESSAGE_BONUS_RANGE = "[ERROR] 보너스 번호는 1~45 사이 숫자여야 합니다.";
 
@@ -27,6 +30,7 @@ public class WinningLottoValidator implements InputValidator {
         List<Integer> numbers = winningLottoParser.parseWinningNumbers(input);
         validateWinningNumberSize(numbers.size());
         validateWinningNumberRange(numbers);
+        validateDuplicateWinningNumber(numbers);
         return numbers;
     }
 
@@ -68,5 +72,12 @@ public class WinningLottoValidator implements InputValidator {
 
     private void validateDuplicateBonusNumber(List<Integer> winningNumbers, int bonus) {
         if (winningNumbers.contains(bonus)) throw new IllegalArgumentException(ERROR_MESSAGE_BONUS_DUPLICATE);
+    }
+
+    private void validateDuplicateWinningNumber(List<Integer> winningNumbers) {
+        Set<Integer> uniqueWinningNumber = new HashSet<>(winningNumbers);
+        if(uniqueWinningNumber.size() != winningNumbers.size()){
+            throw new IllegalArgumentException(ERROR_MESSAGE_WINNING_NUMBER_DUPLICATE);
+        }
     }
 }
